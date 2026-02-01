@@ -1,0 +1,11 @@
+@WebApiSample_HostAddress = http://localhost:5143
+
+GET {{WebApiSample_HostAddress}}/todos/
+Accept: application/json
+
+###
+
+GET {{WebApiSample_HostAddress}}/todos/1
+Accept: application/json
+
+###
