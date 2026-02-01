@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>LiveAuth</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Karuppasamy Pandian</Authors>
+    <Company>LiveAuth</Company>
+    <Description>Live Token Envelope authorization middleware for ASP.NET Core</Description>
+    <PackageTags>jwt,auth,security,middleware,microservices</PackageTags>
+    <RepositoryUrl>https://github.com/ksamhere/LiveAuth</RepositoryUrl>
+  </PropertyGroup>
+
+</Project>
