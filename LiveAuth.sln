@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36518.9 d17.14
+VisualStudioVersion = 17.14.36518.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveAuth.Core", "LiveAuth.Core\LiveAuth.Core.csproj", "{9D2B6F48-30D5-4F67-B784-35119B45FF8C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{9158F838-2673-456E-91CB-83328DE3D9D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiSample", "Samples\WebApiSample\WebApiSample.csproj", "{F93A22E9-C169-C7D9-9DF7-8A5F2BDEC953}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiSample", "WebApiSample\WebApiSample.csproj", "{E79E9E0C-DEF2-4197-951E-0334F7AF72D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveAuth.TestClient", "Samples\LiveAuth.TestClient\LiveAuth.TestClient.csproj", "{28846F4C-4DEB-2A09-2391-73396F12D5B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,17 +21,21 @@ Global
 		{9D2B6F48-30D5-4F67-B784-35119B45FF8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D2B6F48-30D5-4F67-B784-35119B45FF8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D2B6F48-30D5-4F67-B784-35119B45FF8C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E79E9E0C-DEF2-4197-951E-0334F7AF72D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E79E9E0C-DEF2-4197-951E-0334F7AF72D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E79E9E0C-DEF2-4197-951E-0334F7AF72D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E79E9E0C-DEF2-4197-951E-0334F7AF72D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F93A22E9-C169-C7D9-9DF7-8A5F2BDEC953}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F93A22E9-C169-C7D9-9DF7-8A5F2BDEC953}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F93A22E9-C169-C7D9-9DF7-8A5F2BDEC953}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F93A22E9-C169-C7D9-9DF7-8A5F2BDEC953}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28846F4C-4DEB-2A09-2391-73396F12D5B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28846F4C-4DEB-2A09-2391-73396F12D5B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28846F4C-4DEB-2A09-2391-73396F12D5B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28846F4C-4DEB-2A09-2391-73396F12D5B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{9D2B6F48-30D5-4F67-B784-35119B45FF8C} = {9158F838-2673-456E-91CB-83328DE3D9D2}
-		{E79E9E0C-DEF2-4197-951E-0334F7AF72D9} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{F93A22E9-C169-C7D9-9DF7-8A5F2BDEC953} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{28846F4C-4DEB-2A09-2391-73396F12D5B4} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A3ADEA1-B85C-4097-9644-145C4993A8F3}
