@@ -1,7 +1,9 @@
 ﻿using LiveAuth.Core.Abstractions;
+using LiveAuth.Core.Helper;
 using LiveAuth.Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -24,17 +26,39 @@ namespace LiveAuth.Core.Middleware
 
         public async Task InvokeAsync(HttpContext context,
             ISessionStateStore store,
-            IMemoryCache cache)
+            IMemoryCache cache,
+            IConfiguration config)
         {
             var auth = context.Request.Headers["Authorization"].ToString();
-            if (!auth.StartsWith("Bearer ")) { await _next(context); return; }
+            if (!auth.StartsWith("Bearer ")) {
+                context.Response.StatusCode = 401;
+                return;
+            }
 
             var token = auth["Bearer ".Length..];
+            var principal = JwtValidator.Validate(token, config);
+            if (principal == null)
+            {
+                context.Response.StatusCode = 401;
+                return;
+            }
+            var sidClaim = principal.FindFirst("sid");
+            var verClaim = principal.FindFirst("ver");
+
+            if (sidClaim == null || verClaim == null || !int.TryParse(verClaim.Value, out var ver))
+            {
+                context.Response.StatusCode = 401;
+                return;
+            }
+
+             var sid = sidClaim.Value;
+
+            /*
             var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
 
             var sid = jwt.Claims.First(c => c.Type == "sid").Value;
             var ver = int.Parse(jwt.Claims.First(c => c.Type == "ver").Value);
-
+            */
             if (!cache.TryGetValue(sid, out SessionState state))
             {
                 state = await store.GetAsync(sid);
