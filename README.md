@@ -18,9 +18,12 @@ All permissions live in a Central Token State Store (CTSS).
 ```bash
 dotnet add package LiveAuth
 
+```
 ## Run Test samples
 Run the WebApiSample project in which the LiveAuth is being used and then run the LiveAuth.TestClient project.
+
 In this TestClient project, you can see there are few test cases with one valid session id and details and remaining invalid session id are used.
+
 Refer the below image to understand the output
 
 <img width="718" height="410" alt="image" src="https://github.com/user-attachments/assets/b13857b1-4c45-4d70-87e8-9396164e5f29" />
