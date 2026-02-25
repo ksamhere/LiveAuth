@@ -43,7 +43,15 @@ app.MapGet("/secure", (HttpContext context) =>
     var response = new SecureResponse(context.User.Identity?.Name, roles, tenant);
     return Results.Ok(response);
 });
+app.MapPost("/admin/revoke/{sid}", (string sid, ISessionStateStore store) =>
+{
+    if (store is FakeSessionStore memoryStore)
+    {
+        memoryStore.Revoke(sid);
+    }
 
+    return Results.Ok("Revoked");
+});
 app.Run();
 
 
@@ -64,7 +72,7 @@ void generateJwt()
         {
             new Claim("sub", "user1"),
             new Claim("sid", "S123"),
-            new Claim("ver", "1")
+            new Claim("ver", "99")
         },
         expires: DateTime.UtcNow.AddHours(1),
         signingCredentials: creds

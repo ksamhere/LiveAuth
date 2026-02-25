@@ -16,7 +16,7 @@ namespace LiveAuth.Core.Extensions
         public static IServiceCollection AddLiveAuth(this IServiceCollection services, IConfiguration config)
         {
             services.AddMemoryCache();
-            services.AddSingleton<ISessionStateStore, InMemorySessionStateStore>();
+            //services.AddSingleton<ISessionStateStore, InMemorySessionStateStore>();
             return services;
         }
 

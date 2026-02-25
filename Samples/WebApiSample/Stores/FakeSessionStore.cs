@@ -15,9 +15,27 @@ public class FakeSessionStore : ISessionStateStore
                 Revoked = false,
                 Roles = ["Admin"],
                 Scopes = ["orders.read"]
+            },
+            ["S199"] = new SessionState
+            {
+                SessionId = "S199",
+                UserId = "user1",
+                TenantId = "tenant1",
+                Version = 1,
+                Revoked = false,
+                Roles = ["User"],
+                Scopes = ["orders.read"]
             }
         };
 
     public Task<SessionState?> GetAsync(string sid)
         => Task.FromResult(_sessions.TryGetValue(sid, out var s) ? s : null);
+
+    public void Revoke(string sid)
+    {
+        if (_sessions.TryGetValue(sid, out var session))
+        {
+            session.Revoked = true;
+        }
+    }
 }
