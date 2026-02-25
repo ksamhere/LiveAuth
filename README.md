@@ -34,3 +34,5 @@ Output:
 
 <img width="718" height="410" alt="image" src="https://github.com/user-attachments/assets/b13857b1-4c45-4d70-87e8-9396164e5f29" />
 
+Then revoke the valid user using the revoke endpoint. And now the same Session id will be unauthorised. Refer the full image below to understand the sample
+<img width="870" height="862" alt="image" src="https://github.com/user-attachments/assets/74f6436b-d299-4060-8c80-4dc96527d45b" />
