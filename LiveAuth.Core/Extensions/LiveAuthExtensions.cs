@@ -8,13 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace LiveAuth.Core.Extensions
 {
     public static class LiveAuthExtensions
-    {
-        public static IServiceCollection AddLiveAuth(this IServiceCollection services, IConfiguration config)
-        {
-            services.AddMemoryCache();
-            services.Configure<LiveAuthOptions>(config.GetSection("Jwt"));
-            return services;
-        }
+    {       
 
         public static IServiceCollection AddLiveAuth(this IServiceCollection services, Action<LiveAuthOptions> configureOptions)
         {
