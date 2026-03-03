@@ -9,7 +9,9 @@ namespace LiveAuth.Core.Abstractions
 {
     public interface ISessionStateStore
     {
-        Task<SessionState?> GetAsync(string sid);
+        Task<SessionState?> GetSessionAsync(string sid);
+        Task SetSessionAsync(SessionState session);
+        Task RevokeSessionAsync(string sid);
     }
 
     

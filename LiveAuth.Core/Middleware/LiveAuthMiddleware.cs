@@ -53,20 +53,15 @@ namespace LiveAuth.Core.Middleware
 
              var sid = sidClaim.Value;
 
-            /*
-            var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
-
-            var sid = jwt.Claims.First(c => c.Type == "sid").Value;
-            var ver = int.Parse(jwt.Claims.First(c => c.Type == "ver").Value);
-            */
+            
             if (!cache.TryGetValue(sid, out SessionState state))
             {
-                state = await store.GetAsync(sid);
+                state = await store.GetSessionAsync(sid);
                 if (state != null)
                     cache.Set(sid, state, TimeSpan.FromSeconds(30));
             }
 
-            if (state == null || state.Revoked || state.Version != ver)
+            if (state == null || state.IsRevoked || state.Version != ver)
             {
                 context.Response.StatusCode = 401;
                 return;

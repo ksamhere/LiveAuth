@@ -12,7 +12,7 @@ namespace LiveAuth.Core.Models
         public string UserId { get; set; }
         public string TenantId { get; set; }
         public int Version { get; set; }
-        public bool Revoked { get; set; }
+        public bool IsRevoked { get; set; }
         public string[] Roles { get; set; } = [];
         public string[] Scopes { get; set; } = [];
     }

@@ -12,7 +12,7 @@ public class FakeSessionStore : ISessionStateStore
                 UserId = "user1",
                 TenantId = "tenant1",
                 Version = 1,
-                Revoked = false,
+                IsRevoked = false,
                 Roles = ["Admin"],
                 Scopes = ["orders.read"]
             },
@@ -22,20 +22,29 @@ public class FakeSessionStore : ISessionStateStore
                 UserId = "user1",
                 TenantId = "tenant1",
                 Version = 1,
-                Revoked = false,
+                IsRevoked = false,
                 Roles = ["User"],
                 Scopes = ["orders.read"]
             }
         };
 
-    public Task<SessionState?> GetAsync(string sid)
+    public Task<SessionState?> GetSessionAsync(string sid)
         => Task.FromResult(_sessions.TryGetValue(sid, out var s) ? s : null);
 
-    public void Revoke(string sid)
+    public Task RevokeSessionAsync(string sid)
     {
         if (_sessions.TryGetValue(sid, out var session))
         {
-            session.Revoked = true;
+            session.IsRevoked = true;
         }
+        return Task.CompletedTask;
     }
+
+    public Task SetSessionAsync(SessionState session)
+    {
+        _sessions[session.SessionId] = session;
+        return Task.CompletedTask;
+    }
+
+    
 }

@@ -25,8 +25,6 @@ builder.Services.ConfigureHttpJsonOptions(opts =>
 var app = builder.Build();
 
 
-generateJwt(); // Generate token for testing 
-
 app.UseLiveAuth();
 
 // Minimal API endpoint
@@ -47,40 +45,12 @@ app.MapPost("/admin/revoke/{sid}", (string sid, ISessionStateStore store) =>
 {
     if (store is FakeSessionStore memoryStore)
     {
-        memoryStore.Revoke(sid);
+        memoryStore.RevokeSessionAsync(sid);
     }
 
     return Results.Ok("Revoked");
 });
 app.Run();
-
-
-void generateJwt()
-{
-    // 32 bytes = 256 bits
-    var keyBytes = new byte[32];
-    RandomNumberGenerator.Fill(keyBytes); // cryptographically secure
-
-    // store keyBytes as Base64 in config/secret store, then read and Convert.FromBase64String(...)
-    var key = new SymmetricSecurityKey(keyBytes);
-    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-    var token = new JwtSecurityToken(
-        issuer: "auth.example.com",
-        audience: "liveauth-api",
-        claims: new[]
-        {
-            new Claim("sub", "user1"),
-            new Claim("sid", "S123"),
-            new Claim("ver", "99")
-        },
-        expires: DateTime.UtcNow.AddHours(1),
-        signingCredentials: creds
-    );
-
-    var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-    Console.WriteLine(tokenString); //Use this token in the Authorization header as: Bearer {tokenString} in the postman or http client to test the /secure endpoint 
-}
 
 public record Todo(int Id, string? Title, DateOnly? DueBy = null, bool IsComplete = false);
 
