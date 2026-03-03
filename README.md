@@ -1,38 +1,53 @@
 # LiveAuth
 
-LiveAuth is a next-generation authorization model that fixes JWT's biggest flaws:
-revocation, stale claims, and distributed logout.
+LiveAuth is a state-aware authorization middleware for ASP.NET Core that addresses core JWT stateless limitations such as delayed revocation and stale role/permission claims.
 
 ## Why LiveAuth?
-JWT tokens are stateless. Once issued, they cannot be revoked or updated.
-LiveAuth turns tokens into live references.
+Traditional JWT access tokens are self-contained. Once issued, role revocation or session invalidation usually does **not** apply until token expiry.
 
-## How it works
-JWT contains only:
-- sid (session id)
-- ver (permission version)
-
-All permissions live in a Central Token State Store (CTSS).
+LiveAuth keeps JWTs lightweight (session id + version) and validates each request against a session state store, enabling:
+- immediate revocation,
+- role/permission freshness,
+- centralized session control.
 
 ## Install
 ```bash
 dotnet add package LiveAuth
-
 ```
-## Run Test samples
-Run the WebApiSample project in which the LiveAuth is being used and then run the LiveAuth.TestClient project.
 
-In this TestClient project, you can see there are few test cases with one valid session id and details and remaining invalid session id are used.
+## Configure in your API
+```csharp
+builder.Services.AddLiveAuth(options =>
+{
+  options.Issuer = builder.Configuration["Jwt:Issuer"] ?? string.Empty;
+  options.Audience = builder.Configuration["Jwt:Audience"] ?? string.Empty;
+  options.Secret = builder.Configuration["Jwt:Secret"] ?? string.Empty;
+});
+builder.Services.AddSingleton<ISessionStateStore, YourSessionStore>();
 
-Refer the below image to understand the output for the following 
+app.UseLiveAuth();
+```
 
-Testcases:
+`appsettings.json`
+```json
+"Jwt": {
+  "Issuer": "auth.example.com",
+  "Audience": "liveauth-api",
+  "Secret": "MySuperSecretKeyForHS256MustBe32Byte!"
+}
+```
 
-<img width="875" height="217" alt="image" src="https://github.com/user-attachments/assets/8faa626b-ec22-47c1-a818-cfe63d12b4f4" />
+## Sample projects
+- `Samples/WebApiSample`: Uses `LiveAuth` middleware (stateful behavior).
+- `Samples/WebApiSample.WithoutLiveAuth`: Baseline JWT-only API (stateless behavior).
+- `Samples/LiveAuth.TestClient`: Console client to generate test tokens and exercise revocation scenarios.
 
-Output:
+### Demo idea
+1. Run `WebApiSample` and call `/secure` with a valid token.
+2. Revoke with `/admin/revoke/{sid}`.
+3. Call `/secure` again using the same token.
+   - With LiveAuth middleware: request is denied (revocation enforced).
+   - Without LiveAuth middleware: request may still succeed until token expiry.
 
-<img width="718" height="410" alt="image" src="https://github.com/user-attachments/assets/b13857b1-4c45-4d70-87e8-9396164e5f29" />
 
-Then revoke the valid user using the revoke endpoint. And now the same Session id will be unauthorised. Refer the full image below to understand the sample
-<img width="870" height="862" alt="image" src="https://github.com/user-attachments/assets/74f6436b-d299-4060-8c80-4dc96527d45b" />
+If you prefer config binding, `builder.Services.AddLiveAuth(builder.Configuration);` is also supported.

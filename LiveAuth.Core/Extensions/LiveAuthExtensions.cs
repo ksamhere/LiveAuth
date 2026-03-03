@@ -1,13 +1,9 @@
-﻿using LiveAuth.Core.Abstractions;
-using LiveAuth.Core.Middleware;
+﻿using LiveAuth.Core.Middleware;
+using LiveAuth.Core.Models;
 using Microsoft.AspNetCore.Builder;
+using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LiveAuth.Core.Extensions
 {
@@ -16,7 +12,14 @@ namespace LiveAuth.Core.Extensions
         public static IServiceCollection AddLiveAuth(this IServiceCollection services, IConfiguration config)
         {
             services.AddMemoryCache();
-            //services.AddSingleton<ISessionStateStore, InMemorySessionStateStore>();
+            services.Configure<LiveAuthOptions>(config.GetSection("Jwt"));
+            return services;
+        }
+
+        public static IServiceCollection AddLiveAuth(this IServiceCollection services, Action<LiveAuthOptions> configureOptions)
+        {
+            services.AddMemoryCache();
+            services.Configure(configureOptions);
             return services;
         }
 
@@ -25,5 +28,4 @@ namespace LiveAuth.Core.Extensions
             return app.UseMiddleware<LiveAuthMiddleware>();
         }
     }
-
 }

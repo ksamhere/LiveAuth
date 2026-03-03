@@ -1,30 +1,33 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using LiveAuth.Core.Models;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace LiveAuth.Core.Helper
 {
     public static class JwtValidator
     {
-        public static ClaimsPrincipal? Validate(string token, IConfiguration config)
+        public static ClaimsPrincipal? Validate(string token, LiveAuthOptions options)
         {
-            var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(config["Jwt:Secret"]!));
+            if (string.IsNullOrWhiteSpace(options.Secret)
+                || string.IsNullOrWhiteSpace(options.Issuer)
+                || string.IsNullOrWhiteSpace(options.Audience))
+            {
+                return null;
+            }
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.Secret));
 
             var parameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = key,
                 ValidateIssuer = true,
-                ValidIssuer = config["Jwt:Issuer"],
+                ValidIssuer = options.Issuer,
                 ValidateAudience = true,
-                ValidAudience = config["Jwt:Audience"],
+                ValidAudience = options.Audience,
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.FromSeconds(30)
             };
@@ -41,5 +44,4 @@ namespace LiveAuth.Core.Helper
             }
         }
     }
-
 }

@@ -3,14 +3,10 @@ using LiveAuth.Core.Helper;
 using LiveAuth.Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Net.Http;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LiveAuth.Core.Middleware
@@ -18,30 +14,33 @@ namespace LiveAuth.Core.Middleware
     public class LiveAuthMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly LiveAuthOptions _options;
 
-        public LiveAuthMiddleware(RequestDelegate next)
+        public LiveAuthMiddleware(RequestDelegate next, IOptions<LiveAuthOptions> options)
         {
             _next = next;
+            _options = options.Value;
         }
 
         public async Task InvokeAsync(HttpContext context,
             ISessionStateStore store,
-            IMemoryCache cache,
-            IConfiguration config)
+            IMemoryCache cache)
         {
             var auth = context.Request.Headers["Authorization"].ToString();
-            if (!auth.StartsWith("Bearer ")) {
+            if (!auth.StartsWith("Bearer "))
+            {
                 context.Response.StatusCode = 401;
                 return;
             }
 
             var token = auth["Bearer ".Length..];
-            var principal = JwtValidator.Validate(token, config);
+            var principal = JwtValidator.Validate(token, _options);
             if (principal == null)
             {
                 context.Response.StatusCode = 401;
                 return;
             }
+
             var sidClaim = principal.FindFirst("sid");
             var verClaim = principal.FindFirst("ver");
 
@@ -51,14 +50,15 @@ namespace LiveAuth.Core.Middleware
                 return;
             }
 
-             var sid = sidClaim.Value;
+            var sid = sidClaim.Value;
 
-            
-            if (!cache.TryGetValue(sid, out SessionState state))
+            if (!cache.TryGetValue(sid, out SessionState? state))
             {
                 state = await store.GetSessionAsync(sid);
                 if (state != null)
+                {
                     cache.Set(sid, state, TimeSpan.FromSeconds(30));
+                }
             }
 
             if (state == null || state.IsRevoked || state.Version != ver)
@@ -76,5 +76,4 @@ namespace LiveAuth.Core.Middleware
             await _next(context);
         }
     }
-
 }
