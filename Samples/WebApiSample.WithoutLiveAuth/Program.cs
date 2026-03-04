@@ -23,7 +23,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
-builder.Services.AddSingleton<ISessionStateStore, FakeSessionStore>();
+builder.Services.AddSingleton<ISessionStateReader, FakeSessionStore>();
 
 var app = builder.Build();
 

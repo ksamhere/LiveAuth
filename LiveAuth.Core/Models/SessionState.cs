@@ -6,15 +6,13 @@ using System.Threading.Tasks;
 
 namespace LiveAuth.Core.Models
 {
-    public class SessionState
+    public record SessionState
     {
-        public string SessionId { get; set; }
-        public string UserId { get; set; }
-        public string TenantId { get; set; }
-        public int Version { get; set; }
-        public bool IsRevoked { get; set; }
-        public string[] Roles { get; set; } = [];
-        public string[] Scopes { get; set; } = [];
+        public string SessionId { get; init; } 
+        public string Role { get; init; }     
+        public int Version { get; init; }
+        public bool IsRevoked { get; init; }
+        //All of these are immutable
     }
 
 }

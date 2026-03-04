@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace LiveAuth.Core.Abstractions
 {
-    public interface ISessionStateStore
+    public interface ISessionStateReader
     {
-        Task<SessionState?> GetSessionAsync(string sid);
-        Task SetSessionAsync(SessionState session);
-        Task RevokeSessionAsync(string sid);
+        Task<SessionState?> GetSessionAsync(string sid);        
     }
 
     

@@ -2,10 +2,9 @@ namespace LiveAuth.Core.Models
 {
     public class LiveAuthOptions
     {
-        public string Issuer { get; set; } = string.Empty;
-
-        public string Audience { get; set; } = string.Empty;
-
-        public string Secret { get; set; } = string.Empty;
+        public string SessionIdClaimType { get; set; } = "sid";
+        public string VersionClaimType { get; set; } = "ver";
+        public string RoleClaimType { get; set; } = "role";
+        public bool OverrideRoleFromSession { get; set; } = true;
     }
 }
