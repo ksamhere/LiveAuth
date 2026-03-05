@@ -9,6 +9,7 @@
     <Company>LiveAuth</Company>
     <Description>Live Token Envelope authorization middleware for ASP.NET Core</Description>
     <PackageTags>jwt,auth,security,middleware,microservices</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/ksamhere/LiveAuth</RepositoryUrl>
   </PropertyGroup>
 
@@ -19,6 +20,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
