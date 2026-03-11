@@ -62,16 +62,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) .AddJ
     ValidateIssuerSigningKey = true,
     IssuerSigningKey = new SymmetricSecurityKey( Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]))
   };
-});
+}).AddLiveAuth(options =>
+    {
+        options.OverrideRoleFromSession = true;
+    });
 
 ```
-### Add LiveAuth
-```csharp
-builder.Services.AddLiveAuth(options =>
-{
-  options.OverrideRoleFromSession = true;
-});
-```
+
 That’s it. No additional middleware registration required when using the OnTokenValidated integration pattern.
 
 ### Update appsetting.json with UseLiveAuth
@@ -82,7 +79,7 @@ That’s it. No additional middleware registration required when using the OnTok
   "Audience": "liveauth-api",
   "Secret": "MySuperSecretKeyForHS256MustBe32Byte!"
 },
-"UseLiveAuth": true
+
 ```
 
 ## Session Model (Version-Based Invalidation)
