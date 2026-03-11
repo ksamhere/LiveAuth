@@ -7,10 +7,13 @@
     <Version>1.0.0</Version>
     <Authors>Karuppasamy Pandian</Authors>
     <Company>LiveAuth</Company>
-    <Description>Live Token Envelope authorization middleware for ASP.NET Core</Description>
+    <Description>
+      LiveAuth is a production-ready ASP.NET Core extension that adds dynamic session validation and role control on top of JWT authentication.
+    </Description>
     <PackageTags>jwt,auth,security,middleware,microservices</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/ksamhere/LiveAuth</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
