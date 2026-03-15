@@ -22,7 +22,10 @@ builder.Services.AddLiveAuth(options =>
   options.Issuer = builder.Configuration["Jwt:Issuer"] ?? string.Empty;
   options.Audience = builder.Configuration["Jwt:Audience"] ?? string.Empty;
   options.Secret = builder.Configuration["Jwt:Secret"] ?? string.Empty;
-});
+}).AddLiveAuth(options =>
+    {
+        options.OverrideRoleFromSession = true;
+    });
 builder.Services.AddSingleton<ISessionStateStore, YourSessionStore>();
 
 app.UseLiveAuth();
