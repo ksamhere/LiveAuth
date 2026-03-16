@@ -1,0 +1,6 @@
+@WebApiIdleTimeoutSample_HostAddress = http://localhost:5153
+
+GET {{WebApiIdleTimeoutSample_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

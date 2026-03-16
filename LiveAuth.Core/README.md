@@ -28,7 +28,6 @@ builder.Services.AddLiveAuth(options =>
     });
 builder.Services.AddSingleton<ISessionStateStore, YourSessionStore>();
 
-app.UseLiveAuth();
 ```
 
 `appsettings.json`
@@ -42,7 +41,7 @@ app.UseLiveAuth();
 
 ## Sample projects
 - `Samples/WebApiSample`: Uses `LiveAuth` middleware (stateful behavior).
-- `Samples/WebApiSample.WithoutLiveAuth`: Baseline JWT-only API (stateless behavior).
+- Samples/WebApiIdleTimeoutSample`: Web API sample that wires `AddAuthentication(...).AddJwtBearer(...).AddLiveAuth(...)` and demonstrates idle-timeout logout by revoking inactive sessions from the session store.
 - `Samples/LiveAuth.TestClient`: Console client to generate test tokens and exercise revocation scenarios.
 
 ### Demo idea
@@ -52,5 +51,19 @@ app.UseLiveAuth();
    - With LiveAuth middleware: request is denied (revocation enforced).
    - Without LiveAuth middleware: request may still succeed until token expiry.
 
+### Idle Timeout Demo (API + Console Client)
+1. Run `Samples/WebApiIdleTimeoutSample` (default `http://localhost:5000`).
+2. Run `Samples/TestClient` (or pass a base URL as the first argument).
+3. Observe the flow:
+   - login succeeds
+   - immediate `/admin` call succeeds
+   - client waits beyond idle timeout
+   - second `/admin` call returns `401 Unauthorized`
+   - `/session/{sid}` shows `isRevoked = true`
 
-If you prefer config binding, `builder.Services.AddLiveAuth(builder.Configuration);` is also supported.
+### Production Recommendations
+  - Use Redis or SQL as distributed session store
+  - Keep session state immutable (record type)
+  - Do not register JWT inside LiveAuth
+  - Do not bypass HTTPS validation in production
+  - Keep JWT lifetime reasonable even with versioning
