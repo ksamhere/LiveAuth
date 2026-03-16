@@ -190,15 +190,26 @@ This Allows
 ## Sample projects
 - `Samples/WebApiSample`: Uses `LiveAuth` middleware (stateful behavior).
 - `Samples/LiveAuth.TestClient`: Console client to generate test tokens and exercise revocation scenarios.
+- Samples/WebApiIdleTimeoutSample`: Web API sample that wires `AddAuthentication(...).AddJwtBearer(...).AddLiveAuth(...)` and demonstrates idle-timeout logout by revoking inactive sessions from the session store.
 
-### Console Demo Scenario
+### Revoke/Upgrade session Demo Scenario
+Run `Samples/WebApiSample` (default `http://localhost:5000`).
+Select 1, 
+   1. Login as Admin
+   2. Call /admin → 200 OK
+   3. Upgrade session version
+   4. Call /admin again → 401 Unauthorized
+   5. Login again → 200 OK
 
-1. Login as Admin
-2. Call /admin → 200 OK
-3. Upgrade session version
-4. Call /admin again → 401 Unauthorized
-5. Login again → 200 OK
-
+### Idle Timeout Demo (API + Console Client)
+1. Run `Samples/WebApiIdleTimeoutSample` (default `http://localhost:5000`).
+2. Select 2
+3. Observe the flow:
+   - login succeeds
+   - immediate `/admin` call succeeds
+   - client waits beyond idle timeout
+   - second `/admin` call returns `401 Unauthorized`
+   - `/session/{sid}` shows `isRevoked = true`
 
 ### Demo idea
 1. Run `WebApiSample` and then the console app which calls `/login/admin` with a valid token.
